@@ -23,13 +23,6 @@
 #define mqtt_user "<Your User id>" //enter your MQTT username
 #define mqtt_password "<Your Password>" //enter your password
 
-
-
-
-
-
-
-
 WiFiClient espClient;
 PubSubClient client(espClient);
 
@@ -40,6 +33,8 @@ int itsatrap = 0;
 
 
 void setup() {
+  pinMode(2, OUTPUT);
+
   Serial.begin(115200);
 
   setup_wifi();
@@ -77,33 +72,33 @@ void callback(char* topic, byte* payload, unsigned int length) {
     p[length] = NULL;
     String message(p);
     String mytopic(topic);
-    if (itsatrap == 0 && mytopic == "<Your Payload Topic>" && message.equals("ON")){  
+    if (itsatrap == 0 && mytopic == "home/kitchen/coffee_payload" && message.equals("ON")){  
       myservo.attach(D4);
       delay(500);
-      myservo.write(90); 
-      client.publish("<Your State Topic>", "ON");
-      delay(1000);
+      myservo.write(30); 
+      client.publish("home/kitchen/coffee_state", "ON");
+      delay(500);
       myservo.detach();
       }
-    else if (mytopic == "<Your Payload Topic>" && message.equalsIgnoreCase("OFF")){
+    else if (mytopic == "home/kitchen/coffee_payload" && message.equalsIgnoreCase("OFF")){
       myservo.attach(D4);
       delay(500);
       myservo.write(0);  
-      client.publish("<Your State Topic>", "OFF");
+      client.publish("home/kitchen/coffee_state", "OFF");
       delay(1000);
       myservo.detach();
     }
-    else if (mytopic == "<Your Brightness Topic>"){
-      myservo.attach(D4);
-      delay(500);
-      val = message.toInt(); //converts command to integer to be used for positional arrangement
-      val = map (val, 0, 99, 0, 180);
-      myservo.write(val);
-      client.publish("<Your State Topic>", "ON");
-      delay(3000);
-      myservo.detach();
-      itsatrap = 1;
-    }
+//    else if (mytopic == "home/kitchen/coffee_brightness"){
+//      myservo.attach(D4);
+//      delay(500);
+//      val = message.toInt(); //converts command to integer to be used for positional arrangement
+//      val = map (val, 0, 99, 0, 180);
+//      myservo.write(val);
+//      client.publish("home/kitchen/coffee_state", "ON");
+//      delay(3000);
+//      myservo.detach();
+//      itsatrap = 1;
+//    }
     else{
         itsatrap = 0;
     }
@@ -111,15 +106,21 @@ void callback(char* topic, byte* payload, unsigned int length) {
 }
 
 
-
 void loop() {
+///{
+///  digitalWrite(2, HIGH);   // turn the LED on (HIGH is the voltage level)
+///  delay(1800000);                       // wait for a second
+///  digitalWrite(2, LOW);    // turn the LED off by making the voltage LOW
+///  delay(1);                       // wait for a second
+///}
+{
 
   if (!client.connected()) {
     reconnect();
   }
   client.loop();
 }
-
+}
 
 void reconnect() {
   // Loop until we're reconnected
@@ -129,9 +130,9 @@ void reconnect() {
   if (client.connect("ESPBlindstl", mqtt_user, mqtt_password)) {
       Serial.println("connected");
 
-      client.subscribe("<Your Payload Topic>");
-      client.subscribe("<Your Brightness Topic>");
-      client.publish("<Your State Topic>", "OFF");
+      client.subscribe("home/kitchen/coffee_payload");
+      client.subscribe("home/kitchen/coffee_brightness");
+      client.publish("home/kitchen/coffee_state", "OFF");
     } else {
       Serial.print("failed, rc=");
       Serial.print(client.state());
@@ -141,6 +142,3 @@ void reconnect() {
     }
   }
 }
-
-
-
