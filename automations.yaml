@@ -1,0 +1,13 @@
+- action:
+  - alias: ''
+    data:
+      entity_id: light.coffee
+    service: light.toggle
+  alias: coffee maker
+  condition: []
+  id: '1511643025537'
+  trigger:
+  - entity_id: light.coffee
+    from: 'off'
+    platform: state
+    to: 'on'
