@@ -11,3 +11,7 @@ light:
     payload_off: "OFF"
     optimistic: false
     retain: true
+
+customize: !include customize.yaml
+automation: !include automations.yaml
+switch: !include switches.yaml
