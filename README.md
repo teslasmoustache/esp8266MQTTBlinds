@@ -1,1 +1,1 @@
-This project will detail the setup of standard 2 inch window blinds that are controlled by an esp8266 and a futaba s3003 servo.
+This project will detail the setup of ~~standard 2 inch window blinds that are controlled by an esp8266 and a futaba s3003 servo.~~ an automated coffee maker controlled by a NodeMCU board and a Tower Pro SG92R servo.
