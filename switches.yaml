@@ -1,0 +1,9 @@
+- platform: mqtt
+  name: "Coffee Maker"
+  command_topic: "home/kitchen/coffee_payload"
+  state_topic: "home/kitchen/coffee_state"
+  payload_on: "ON"
+  payload_off: "OFF"
+  optimistic: false
+  qos: 0
+  retain: true
